@@ -1,0 +1,57 @@
+{
+  "id": 99,
+  "date": "2025-06-04",
+  "note": "TTBC0001",
+  "status": {
+    "slug": "draft",
+    "name": "Belum Diajukan"
+  },
+  "reject_reason": null,
+  "tread_summaries": [
+    {
+      "name": "RAB 160",
+      "qualities": {
+        "crown": 0,
+        "super": 1,
+        "classic": 0,
+        "green": 0
+      }
+    }
+  ],
+  "tread_items": [
+    {
+      "id": 257,
+      "item": {
+        "id": 38,
+        "name": "Rubberman super"
+      },
+      "unit": "Meter",
+      "qty": 100,
+      "received_qty": 0
+    }
+  ],
+  "cg_items": [
+    {
+      "id": 258,
+      "item": {
+        "id": 58,
+        "name": "CG 24"
+      },
+      "unit": "Kg",
+      "qty": 100,
+      "received_qty": 0
+    }
+  ],
+  "other_items": [
+    {
+      "id": 259,
+      "item": {
+        "id": 3,
+        "name": "Envelope 2000-30"
+      },
+      "unit": "Pcs",
+      "qty": 100,
+      "received_qty": 0
+    }
+  ]
+}
