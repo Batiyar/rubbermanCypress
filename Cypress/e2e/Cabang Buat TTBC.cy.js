@@ -12,7 +12,6 @@ describe ('Module TTBC', () => {
     })
     it('Positive Case TTBC', () => {
       //Set tanggal dibuat TTBC
-      const targetDate = "May 27, 2025"; // Format harus sama dengan aria-label
       cy.contains("Pengiriman & Penagihan", {timeout: 10000}).should('be.visible').click({force: true});      
       cy.contains("TTBC").should('be.visible').click({force: true});
       //Tambah TTBC
@@ -22,9 +21,11 @@ describe ('Module TTBC', () => {
       cy.get('input[type="file"]').selectFile('cypress/fixtures/contoh.png', { force: true });
       cy.get('input[placeholder="Pilih tanggal"]').first().click({force: true});
       cy.get('[id^="input-"] input.flat-picker-custom-style[placeholder="Pilih tanggal"]').eq(1).click({ force: true });
-      cy.get('.dayContainer span[aria-label="' + targetDate + '"]').click({ force: true });
+      cy.fixture('settingData.json').then((data) => {
+        cy.get('.dayContainer span[aria-label="' + data.targetDate + '"]').click({ force: true });
+      });
       cy.contains('label','No. TTBC').parent().find('input[type="text"]').type('TTBC0001');
-      cy.get('input[placeholder="Cari nama konsumen"]').type('a').get('.v-overlay-container').contains('a').click();
+      cy.get('input[placeholder="Cari nama konsumen"]').type('PT').get('.v-overlay-container').contains('PT').click();
       cy.get('input[placeholder="Cari nama sopir"]').type('a').get('.v-overlay-container').contains('a').click();
       cy.contains('label','Catatan').parent().find('textarea').type('TTBC0001');
       cy.tambahTTBC0();

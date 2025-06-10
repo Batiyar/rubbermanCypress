@@ -7,7 +7,7 @@ describe ('Flow Permintaan Bahan Baku', () => {
     //     cy.intercept('POST', '**/api/branch/**/request-material**').as('getPermintaanBahanBaku');
     //     cy.login_sc();
     //     //Set tanggal dibuat Permintaan bahan baku
-    //     const targetDate = "June 4, 2025"; // Format harus sama dengan aria-label
+    //     const targetDate = "June 9, 2025"; // Format harus sama dengan aria-label
     //     /////////////////////////////////////////////////////////////////////////
     //     cy.contains("Pembelian", {timeout: 10000}).should('be.visible').click({force: true});
     //     cy.contains("Permintaan Bahan Baku").should('be.visible').click({force: true});
@@ -55,6 +55,7 @@ describe ('Flow Permintaan Bahan Baku', () => {
     //     });   
     //     cy.get('button[type="button"]').find('span.v-btn__content').contains('Setujui').click({force: true});
     //     cy.get('div.v-card-text > button[type="button"]').find('.v-btn__content').contains('Iya, Setujui').click({ force: true });
+    //     cy.wait(2000);
     // });
     it('Admin Cabang Menerima Bahan Baku', () => {
         cy.login_sc();
@@ -66,5 +67,11 @@ describe ('Flow Permintaan Bahan Baku', () => {
         cy.get('div.mb-6 > a.v-btn--elevated').find('.v-btn__content').should('contain', 'Tambah Penerimaan').click({ force: true });
         cy.get('input[placeholder="Masukkan Nomor Surat"]').type(faker.number.int({min : 100, max: 900}, { force: true }));
         cy.contains('label','Catatan').parent().find('textarea').type(faker.finance.amount());
+        cy.get('[id^="input-"] input.flat-picker-custom-style[placeholder="Pilih tanggal"]').eq(1).click({ force: true });
+        cy.fixture('settingData.json').then((data) => {
+            cy.get('.dayContainer span[aria-label="' + data.targetDate + '"]').click({ force: true });
+        });
+        cy.contains("Pilih Foto").click({force: true});
+        cy.get('input[type="file"]').selectFile('cypress/fixtures/contoh.png', { force: true });
     });
 })
