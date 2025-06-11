@@ -25,13 +25,12 @@ describe ('Module TTBC', () => {
         cy.get('.dayContainer span[aria-label="' + data.targetDate + '"]').click({ force: true });
       });
       cy.contains('label','No. TTBC').parent().find('input[type="text"]').type('TTBC0001');
-      cy.get('input[placeholder="Cari nama konsumen"]').type('PT').get('.v-overlay-container').contains('PT').click();
-      cy.get('input[placeholder="Cari nama sopir"]').type('a').get('.v-overlay-container').contains('a').click();
+      cy.get('input[placeholder="Cari nama konsumen"]').click({force: true}).get('.v-overlay-container').find('.v-list-item').first().click();
+      cy.get('input[placeholder="Cari nama sopir"]').click({force: true}).get('.v-overlay-container').find('.v-list-item').first().click();
       cy.contains('label','Catatan').parent().find('textarea').type('TTBC0001');
       cy.tambahTTBC0();
       cy.tambahTTBC1();                  
       cy.get('span.v-btn__content > i.ri-file-copy-line').eq(1).click();
-      cy.get('span.v-btn__content').contains('Buat TTBC').click({force: true});
       cy.get('span.v-btn__content').contains('Buat TTBC').click({force: true});
       cy.get('div.v-card-text > button.v-btn--elevated').find('.v-btn__content').should('contain', 'Buat TTBC').click({ force: true });
     });

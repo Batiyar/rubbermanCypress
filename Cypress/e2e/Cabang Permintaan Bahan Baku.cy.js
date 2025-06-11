@@ -6,9 +6,6 @@ describe ('Flow Permintaan Bahan Baku', () => {
     // it("Admin Cabang Buat permintaan bahan baku", () => {
     //     cy.intercept('POST', '**/api/branch/**/request-material**').as('getPermintaanBahanBaku');
     //     cy.login_sc();
-    //     //Set tanggal dibuat Permintaan bahan baku
-    //     const targetDate = "June 9, 2025"; // Format harus sama dengan aria-label
-    //     /////////////////////////////////////////////////////////////////////////
     //     cy.contains("Pembelian", {timeout: 10000}).should('be.visible').click({force: true});
     //     cy.contains("Permintaan Bahan Baku").should('be.visible').click({force: true});
     //     cy.contains("Buat Permintaan").should('be.visible').click({force: true});
@@ -33,7 +30,9 @@ describe ('Flow Permintaan Bahan Baku', () => {
     //     // input tanggal
     //     cy.get('input[placeholder="Pilih tanggal"]').first().click({force: true});
     //     cy.get('[id^="input-"] input.flat-picker-custom-style[placeholder="Pilih tanggal"]').eq(1).click({ force: true });
-    //     cy.get('.dayContainer span[aria-label="' + targetDate + '"]').click({ force: true });
+    //     cy.fixture('settingData.json').then((data) => {
+    //         cy.get('.dayContainer span[aria-label="' + data.targetDate + '"]').click({ force: true });
+    //     });
     //     cy.get('span.v-btn__content').contains('Buat & Ajukan').click({force: true});
     //     cy.wait(2000);
     //     cy.wait('@getPermintaanBahanBaku').then((xhr) => {            
@@ -62,16 +61,32 @@ describe ('Flow Permintaan Bahan Baku', () => {
         cy.contains("Pembelian", {timeout: 10000}).should('be.visible').click({force: true});
         cy.contains("Penerimaan Barang").should('be.visible').click({force: true});
         cy.get('button[type="button"]').find('span.v-btn__content').should('be.visible');
-        cy.wait(5000);
         cy.get('button[type="button"]').find('span.v-btn__content').should('be.visible');
         cy.get('div.mb-6 > a.v-btn--elevated').find('.v-btn__content').should('contain', 'Tambah Penerimaan').click({ force: true });
+        cy.url().should('eq', 'https://admin.rubberman.timedoor-host.web.id/branch/material-receipt/create', {timeout: 20000});
         cy.get('input[placeholder="Masukkan Nomor Surat"]').type(faker.number.int({min : 100, max: 900}, { force: true }));
-        cy.contains('label','Catatan').parent().find('textarea').type(faker.finance.amount());
         cy.get('[id^="input-"] input.flat-picker-custom-style[placeholder="Pilih tanggal"]').eq(1).click({ force: true });
         cy.fixture('settingData.json').then((data) => {
             cy.get('.dayContainer span[aria-label="' + data.targetDate + '"]').click({ force: true });
         });
+        cy.contains('label','Catatan').parent().find('textarea').type(faker.finance.amount());
         cy.contains("Pilih Foto").click({force: true});
         cy.get('input[type="file"]').selectFile('cypress/fixtures/contoh.png', { force: true });
+        cy.get('div.v-field__field').contains('label','Pilih Tanggal PO').click({force: true});
+        cy.fixture('settingData.json').then((data) => {
+            const date = new Date(data.targetDate);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = date.toLocaleString('default', { month: 'short' });
+            const year = date.getFullYear();
+            const formattedDate = `${day} ${month} ${year}`;       
+            cy.get('div.v-list-item-title').contains(formattedDate).click({ force: true });
+        });
+        cy.then(() => {
+            for (let i = 0; i < 3; i++) {
+                cy.contains('span', 'New').parent().find('.v-btn__content').click();
+                cy.get('.v-field__input').find('input[type="text"][placeholder="Cari Barang"]').click().get('.v-overlay-container').find('.v-list-item').eq(i).click();
+            }
+        });
+        cy.get('span.v-btn__content').contains('Buat Penerimaan').click({force: true});
     });
 })
